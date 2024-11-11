@@ -1,4 +1,4 @@
-use ratatui::{layout::{Constraint, Direction, Layout, Rect}, style::{Color, Style}, text::Text, widgets::{Block, Borders, Paragraph}, Frame};
+use ratatui::{layout::{Constraint, Direction, Layout, Rect}, style::{Color, Style}, text::{Line, Span, Text}, widgets::{Block, Borders, List, ListItem, Paragraph}, Frame};
 
 use crate::app::App;
 
@@ -12,6 +12,7 @@ pub fn ui(frame: &mut Frame, app: &App) {
         ])
         .split(frame.area());
 
+    // Title widgets
     let title_block = Block::default()
             .borders(Borders::ALL)
             .style(Style::default());
@@ -23,6 +24,20 @@ pub fn ui(frame: &mut Frame, app: &App) {
         .block(title_block);
 
     frame.render_widget(title, chunks[0]);
+
+    // Existing pairs list
+    let mut list_items = Vec::<ListItem>::new();
+
+    for key in app.pairs.keys() {
+        list_items.push(ListItem::new(Line::from(Span::styled(
+            format!("{: <25} : {}", key, app.pairs.get(key).unwrap()),
+            Style::default().fg(Color::Yellow),
+        ))));
+    }
+
+    let list = List::new(list_items);
+
+    frame.render_widget(list, chunks[1]);
 }
 
 fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -> Rect {
