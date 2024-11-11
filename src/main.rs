@@ -14,7 +14,7 @@ use ratatui::Terminal;
 use std::error::Error;
 use std::io;
 use app::{App, CurrentScreen, CurrentlyEditing};
-// use ui;
+use ui::ui;
 
 fn main() -> Result<(), Box<dyn Error>> {
     
